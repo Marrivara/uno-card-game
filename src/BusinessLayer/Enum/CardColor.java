@@ -1,8 +1,9 @@
 package src.BusinessLayer.Enum;
 
 public enum CardColor {
-    Blue,
-    Green,
-    Red,
-    Yellow,
+    BLUE,
+    GREEN,
+    RED,
+    YELLOW,
+    NONE,
 }

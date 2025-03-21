@@ -55,6 +55,7 @@ public class Deck {
         }
 
         actionCards.add(new ActionCard(ActionCardEnum.SHUFFLE, CardColor.NONE, 40));
+        return actionCards;
     }
 
 }
