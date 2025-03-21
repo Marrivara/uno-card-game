@@ -1,29 +1,40 @@
 package src.BusinessLayer.Deck;
 
+import src.BusinessLayer.Card.ActionCard;
+import src.BusinessLayer.Card.Card;
+import src.BusinessLayer.Card.NumberCard;
+import src.BusinessLayer.DataTypes.Bag;
+import src.BusinessLayer.Enum.ActionCardEnum;
+import src.BusinessLayer.Enum.CardColor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Deck {
 
-    private Bag cards;
+    private Bag<Card> cards;
 
     public Deck() {
-        cards = new Bag();
+        cards = new Bag<Card>();
         cards.addAll(createNumberCards());
         cards.addAll(createActionCards());
     }
 
     private List<Card> createNumberCards() {
         List<Card> numberCards = new ArrayList<>();
-        
+
         for (int j = 1; j < 10; j++) {
             for (CardColor color : CardColor.values()) {
-                numberCards.add(new NumberCard(color, j));
-                numberCards.add(new NumberCard(color, j));
+                numberCards.add(new NumberCard(j, color, j));
+                numberCards.add(new NumberCard(j, color, j));
             }
         }
-        
+
         for (CardColor color : CardColor.values()) {
-            numberCards.add(new NumberCard(color, 0));
+            numberCards.add(new NumberCard(0, color, 0));
         }
-    
+
         return numberCards;
     }
 
@@ -45,5 +56,5 @@ public class Deck {
 
         actionCards.add(new ActionCard(ActionCardEnum.SHUFFLE, CardColor.NONE, 40));
     }
-    
+
 }

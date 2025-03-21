@@ -1,4 +1,4 @@
-package src.BusinessLayer.Enum;
+package src.BusinessLayer.Direction;
 
 public enum Direction {
     Clockwise,

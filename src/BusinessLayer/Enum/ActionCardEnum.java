@@ -1,9 +1,10 @@
 package src.BusinessLayer.Enum;
 
 public enum ActionCardEnum {
-    Reverse,
-    Skip,
-    DrawTwo,
-    DrawFour,
-    Shuffle,
+    DRAW_TWO,
+    REVERSE,
+    SKIP,
+    WILD,
+    WILD_DRAW_FOUR,
+    SHUFFLE,
 }

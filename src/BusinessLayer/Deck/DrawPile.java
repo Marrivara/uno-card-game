@@ -1,3 +1,7 @@
+package src.BusinessLayer.Deck;
+
+import src.BusinessLayer.Card.Card;
+
 public class DrawPile extends Pile {
     
     public DrawPile() {
@@ -5,6 +9,6 @@ public class DrawPile extends Pile {
     }
 
     public Card drawCard() {
-        return cards.pop();
+        return this.getCards().pop();
     }
 }

@@ -19,7 +19,7 @@ public abstract class Card {
         return point;
     }
 
-    public abstract boolean canBePlayedOn(Card card);
+    public abstract boolean canBePlayedOn(Card card, CardColor nextColor);
 
     public abstract String toString();
 }

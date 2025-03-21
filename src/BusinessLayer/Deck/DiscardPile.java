@@ -1,3 +1,7 @@
+package src.BusinessLayer.Deck;
+
+import src.BusinessLayer.Card.Card;
+
 public class DiscardPile extends Pile {
 
     public DiscardPile() {
@@ -5,7 +9,7 @@ public class DiscardPile extends Pile {
     }
 
     public void cardAction(Card card) {
-        cards.push(card);
+        this.getCards().push(card);
         return;
     }
 }
