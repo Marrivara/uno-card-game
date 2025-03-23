@@ -3,6 +3,7 @@ package src.BusinessLayer.Deck;
 import src.BusinessLayer.Card.Card;
 
 import java.util.Stack;
+import java.util.ArrayList;
 
 public abstract class Pile {
 
@@ -12,7 +13,17 @@ public abstract class Pile {
         cards = new Stack<Card>();
     }
 
-    public Stack<Card> getCards() {
+    public ArrayList<Card> returnAllCards() {
+        return new ArrayList<Card>(cards);
+    }
+
+    protected Stack<Card> getStack() {
         return cards;
+    }
+
+    protected void setStack(ArrayList<Card> deck) {
+        for (Card c : deck) {
+            cards.push(c);
+        }
     }
 }

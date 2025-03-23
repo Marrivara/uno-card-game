@@ -54,7 +54,7 @@ public class Deck {
             actionCards.add(new ActionCard(ActionCardEnum.WILD_DRAW_FOUR, color, 50));
         }
 
-        actionCards.add(new ActionCard(ActionCardEnum.SHUFFLE, CardColor.NONE, 40));
+        actionCards.add(new ActionCard(ActionCardEnum.SHUFFLE, CardColor.BLACK, 40));
         return actionCards;
     }
 

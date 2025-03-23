@@ -8,8 +8,11 @@ public class DiscardPile extends Pile {
         super();
     }
 
-    public void cardAction(Card card) {
-        this.getCards().push(card);
-        return;
+    public void pushCard(Card c) {
+        this.getStack().push(c);
+    }
+
+    public Card peekTopCard() {
+        return this.getStack().peek();
     }
 }

@@ -18,8 +18,4 @@ public abstract class Card {
     public Integer getPoint() {
         return point;
     }
-
-    public abstract boolean canBePlayedOn(Card card, CardColor nextColor);
-
-    public abstract String toString();
 }
