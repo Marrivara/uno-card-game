@@ -5,5 +5,9 @@ public enum CardColor {
     GREEN,
     RED,
     YELLOW,
-    BLACK
+    BLACK;
+
+    public static CardColor[] getAllColorsExceptBlack() {
+        return new CardColor[] {BLUE, GREEN, RED, YELLOW};
+    }
 }
