@@ -18,7 +18,7 @@ public class GameStateRecorder {
      * @param players The list of players
      * @param stateType The type of state being recorded (Initial, Round, Final)
      */
-    public void recordGameState(List<Player> players, String stateType) {
+    public static void recordGameState(List<Player> players, String stateType) {
         try {
             FileWriter writer = new FileWriter(CSV_FILE_PATH, true);
             

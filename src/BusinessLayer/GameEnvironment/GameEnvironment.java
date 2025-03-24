@@ -11,7 +11,8 @@ public class GameEnvironment {
     private ArrayList<Player> player_list;
     private DiscardPile discardPile;
     private DrawPile drawPile;
-    
+    private Deck initialDeck;
+
     private boolean validGame;
     private boolean isGameBegun;
     
@@ -20,6 +21,7 @@ public class GameEnvironment {
         player_list = new ArrayList<>();
         discardPile = new DiscardPile();
         drawPile = new DrawPile();
+        initialDeck = new Deck();
 
         validGame = false;
         isGameBegun = false;
@@ -79,6 +81,10 @@ public class GameEnvironment {
 
     public DiscardPile getDiscardPile() {
         return discardPile;
+    }
+
+    public Deck getInitialDeck() {
+        return initialDeck;
     }
 
     public void reshuffleDiscardToDraw() {

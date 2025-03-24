@@ -15,8 +15,6 @@ public class CardStrategy {
     
     /**
      * Creates a new card strategy with the given random generator.
-     * 
-     * @param random The random number generator
      */
     public CardStrategy() {
         this.random = new Random();
