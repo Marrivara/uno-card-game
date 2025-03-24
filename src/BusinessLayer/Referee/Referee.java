@@ -22,7 +22,7 @@ public class Referee {
     public Referee() {
         this.rules = new GameRules();
         this.env = new GameEnvironment();
-        this.recorder= new GameStateRecorder();
+        this.recorder = new GameStateRecorder();
         deck = new Deck();
         dealerIndex = 0;
 
@@ -37,58 +37,65 @@ public class Referee {
 
     public boolean playerTurn() {
         Card topCard = env.getDiscardPile().peekTopCard();
+        System.out.println("Top card: " + topCard.getName());
         Card playedCard = currentPlayer.playCard(topCard);
+        env.getDiscardPile().returnAllCards().addLast(playedCard);
+        System.out.println("Played card: " + playedCard);
 
-            if (playedCard == null && currentPlayer.getHand().size() != 0) {
-                System.out.println(currentPlayer.getName() + " has no playable cards and must draw.");
+        if (playedCard == null && !currentPlayer.getHand().isEmpty()) {
+            System.out.println(currentPlayer.getName() + " has no playable cards and must draw.");
+            System.out.println(env.getDrawPile().returnAllCards().size());
 
-                if (env.getDrawPile().returnAllCards().isEmpty())
-                    env.reshuffleDiscardToDraw();
-                
-                Card drawnCard = currentPlayer.pickCard(env.getDrawPile() , 1).removeFirst();
-                System.out.println(currentPlayer.getName() + " draws " + drawnCard);
+            if (env.getDrawPile().returnAllCards().isEmpty())
+                env.reshuffleDiscardToDraw();
+            Card drawnCard = currentPlayer.pickCard(env.getDrawPile(), 1).removeFirst();
+            env.getDrawPile().returnAllCards().remove(drawnCard);
+            System.out.println(currentPlayer.getName() + " draws " + drawnCard);
 
-                if (canPlayDrawnCard(drawnCard)) {
-                    System.out.println(currentPlayer.getName() + " plays the drawn card: " + drawnCard.getName());
-                    env.getDiscardPile().pushCard(drawnCard);
-                }
+            if (canPlayDrawnCard(drawnCard)) {
+                System.out.println(currentPlayer.getName() + " plays the drawn card: " + drawnCard);
+                env.getDiscardPile().pushCard(drawnCard);
             }
-            
-            boolean skipped = false;
-            if (playedCard instanceof ActionCard) {
-                ActionCardEnum type = ((ActionCard)playedCard).getActionType();
+        } else if (!currentPlayer.getHand().isEmpty()) {
+            System.out.println(currentPlayer.getName() + " plays " + playedCard.getName());
+            env.getDiscardPile().pushCard(playedCard);
+        }
 
-                switch (type) {
-                    case ActionCardEnum.DRAW_TWO:
-                    env.getNextPlayer(currentPlayer).pickCard(env.getDrawPile(),2);
+        boolean skipped = false;
+        if (playedCard instanceof ActionCard) {
+            ActionCardEnum type = ((ActionCard) playedCard).getActionType();
+
+            switch (type) {
+                case ActionCardEnum.DRAW_TWO:
+                    env.getNextPlayer(currentPlayer).pickCard(env.getDrawPile(), 2);
                     break;
-                    case ActionCardEnum.REVERSE:
+                case ActionCardEnum.REVERSE:
                     env.reverse();
                     break;
-                    case ActionCardEnum.SKIP:
+                case ActionCardEnum.SKIP:
                     skipped = true;
                     break;
-                    case ActionCardEnum.WILD:
+                case ActionCardEnum.WILD:
                     currentPlayer.getMostCommonColor();
                     break;
-                    case ActionCardEnum.WILD_DRAW_FOUR:
+                case ActionCardEnum.WILD_DRAW_FOUR:
                     env.getNextPlayer(currentPlayer).pickCard(env.getDrawPile(), 4);
                     break;
-                    case ActionCardEnum.SHUFFLE:
+                case ActionCardEnum.SHUFFLE:
                     shuffle();
                     break;
-                }
             }
-            System.out.println(currentPlayer.getName() + currentPlayer.getHand().size());
-            if (currentPlayer.hasNoCards()) {
-                System.out.println(currentPlayer.getName() + " has no cards left! Round over.");
-                return true;
-            }
-            if (skipped)
-                currentPlayer = env.skip(currentPlayer);
-            else 
-                currentPlayer = env.getNextPlayer(currentPlayer);
-            
+        }
+        System.out.println(currentPlayer.getName() + currentPlayer.getHand().size());
+        if (currentPlayer.hasNoCards()) {
+            System.out.println(currentPlayer.getName() + " has no cards left! Round over.");
+            return true;
+        }
+        if (skipped)
+            currentPlayer = env.skip(currentPlayer);
+        else
+            currentPlayer = env.getNextPlayer(currentPlayer);
+
         return false;
     }
 
@@ -99,10 +106,11 @@ public class Referee {
 
         while (!pile.returnAllCards().isEmpty()) {
             currentPlayer.pickCard(pile, 1);
-            currentPlayer = env.getNextPlayer(currentPlayer); 
+            currentPlayer = env.getNextPlayer(currentPlayer);
         }
         currentPlayer = tempCurrentPlayer;
     }
+
     public void playGame() {
         int roundNumber = 1;
         boolean gameOver = false;
@@ -130,19 +138,19 @@ public class Referee {
             scanner.close();
 
             resetForNewRound();
-            
 
 
         }
     }
+
     private void playRound() {
         boolean roundOver = false;
-       
+
         while (!roundOver) {
             System.out.println("\n" + currentPlayer.getName() + "'s turn");
-            
+
             roundOver = playerTurn();
-            
+
             if (roundOver) {
                 calculateRoundPoints(currentPlayer, env.getAllPlayers());
                 recorder.recordGameState(env.getAllPlayers(), "Round");
@@ -152,7 +160,7 @@ public class Referee {
 
     public void calculateRoundPoints(Player winner, List<Player> players) {
         int points = 0;
-        
+
         // Calculate points from remaining cards in opponents' hands
         for (Player player : players) {
             if (player != winner) {
@@ -161,7 +169,7 @@ public class Referee {
                 }
             }
         }
-        
+
         // Award points to the winner
         winner.addScore(points);
         System.out.println(winner.getName() + " wins the round and earns " + points + " points!");
@@ -170,35 +178,35 @@ public class Referee {
 
     private boolean canPlayDrawnCard(Card drawnCard) {
         boolean hasMatchingColor = false;
-        
+
         for (Card card : currentPlayer.getHand()) {
             if (card.getColor().equals(env.getDiscardPile().peekTopCard().getColor())) {
                 hasMatchingColor = true;
                 break;
             }
         }
-        
+
         return rules.isCardPlayable(drawnCard, env.getDiscardPile().peekTopCard(), hasMatchingColor);
     }
 
     private void resetForNewRound() {
         // Clear all player hands
-        for (Player p: env.getAllPlayers()) {
+        for (Player p : env.getAllPlayers()) {
             p.getHand().clear();
         }
-        
+
         env.shuffle();
-        
+
         // Move dealer position to the next player
         dealerIndex = (dealerIndex + 1) % env.getAllPlayers().size();
         System.out.println("\nNew dealer: " + env.getAllPlayers().get(dealerIndex).getName());
-        
+
         // Deal cards again
         dealInitialCards();
-        
+
         // Start discard pile
         initializeDiscardPile();
-        
+
         // Set first player
         setFirstPlayer();
     }
@@ -211,14 +219,14 @@ public class Referee {
                 int playerIndex = (dealerIndex + 1 + j) % env.getAllPlayers().size();
                 Player currentPlayer = env.getAllPlayers().get(playerIndex);
                 currentPlayer.pickCard(env.getDrawPile(), 1);
-                
+
             }
         }
-        
+
         // Print each player's hand
         for (Player player : env.getAllPlayers()) {
             for (Card c : player.getHand()) {
-            System.out.println(player.getName() + "'s hand: " + c.getName());
+                System.out.println(player.getName() + "'s hand: " + c.getName());
             }
         }
     }
@@ -226,7 +234,7 @@ public class Referee {
     private void initializeDiscardPile() {
         Card topCard = env.getDrawPile().drawCard(1).removeFirst();
         env.getDiscardPile().pushCard(topCard);
-        
+
         System.out.println("\nStarting card on discard pile: " + topCard.getName());
     }
 
