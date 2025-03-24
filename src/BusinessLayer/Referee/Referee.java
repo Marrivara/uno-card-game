@@ -104,9 +104,14 @@ public class Referee {
         currentPlayer = env.getNextPlayer(currentPlayer);
         DrawPile pile = env.shuffle();
 
+        int counter = 0;
         while (!pile.returnAllCards().isEmpty()) {
             currentPlayer.pickCard(pile, 1);
+            if (currentPlayer.getHand().size() == 7)
+                counter++;
             currentPlayer = env.getNextPlayer(currentPlayer);
+            if (counter == 7)
+                break;
         }
         currentPlayer = tempCurrentPlayer;
     }
@@ -122,6 +127,7 @@ public class Referee {
         while (!gameOver) {
             System.out.println("\n========== ROUND " + roundNumber + " ==========");
             playRound();
+
             for (Player p : env.getAllPlayers()) {
                 if (p.getScore() >= GameRules.WINNING_SCORE) {
                     gameOver = true;
