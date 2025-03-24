@@ -1,17 +1,14 @@
 package src.BusinessLayer.Referee;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
-
-import src.BusinessLayer.GameEnvironment.GameInitializer;
 import src.BusinessLayer.Player.Player;
-import src.BusinessLayer.Deck.DiscardPile;
 import src.BusinessLayer.Enum.ActionCardEnum;
 import src.BusinessLayer.GameEnvironment.GameEnvironment;
-import src.BusinessLayer.Card.ActionCard;
-import src.BusinessLayer.Card.Card;
+import src.BusinessLayer.Deck.*;
+import src.BusinessLayer.Card.*;
 
 public class Referee {
     private GameRules rules;
@@ -19,59 +16,41 @@ public class Referee {
     private GameEnvironment env;
     private GameStateRecorder recorder;
     private int dealerIndex;
-    private Random random;
-    private GameInitializer gameInitializer;
-    private boolean gameDirection;
-    private int currentPlayerIndex;
+    private int numberOfPlayers;
+    private Deck deck;
 
     public Referee() {
         this.rules = new GameRules();
         this.env = new GameEnvironment();
         this.recorder= new GameStateRecorder();
-        this.dealerIndex = 0;
-        this.random = new Random();
+        deck = new Deck();
+        dealerIndex = 0;
 
-        // Create players (2-4 players randomly)
-        int numPlayers = random.nextInt(3) + 2; // 2 to 4 players
-        for (int i = 0; i < numPlayers; i++) {
-            env.addPlayer(new Player("Player" + (i + 1)));
+        Random rand = new Random();
+        numberOfPlayers = rand.nextInt(3) + 2;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            Player newPlayer = new Player("Player" + i);
+            env.addPlayer(newPlayer);
         }
-    }
-
-    public void startGame(){
-        System.out.println("Starting Duo Card Game...");
-
-        // Initialize the game
-        this.gameInitializer = new GameInitializer(env);
-        this.gameInitializer.initializeGame();
-
-        // Set initial game state from initializer
-        int dealerIndex = this.gameInitializer.getDealerIndex();
-        gameDirection = this.gameInitializer.getGameDirection();
-
-        // Set the first player (player to the left of dealer or based on first card's effect)
-        currentPlayerIndex = (dealerIndex + 1) % env.getAllPlayers().size();
-
-        // Record initial game state
-        GameStateRecorder.recordGameState(env.getAllPlayers(), "Initial");
-
-        // Play the game
-        playGame();
+        env.getDrawPile().addDeck(deck.getDeck());
     }
 
     public boolean playerTurn() {
         Card topCard = env.getDiscardPile().peekTopCard();
         Card playedCard = currentPlayer.playCard(topCard);
 
-            if (playedCard == null) {
+            if (playedCard == null && currentPlayer.getHand().size() != 0) {
                 System.out.println(currentPlayer.getName() + " has no playable cards and must draw.");
 
-                if (env.getDrawPile().returnAllCards().isEmpty()) {
+                if (env.getDrawPile().returnAllCards().isEmpty())
                     env.reshuffleDiscardToDraw();
-                    drawCardFromPileAndCheckPlayability();
-                }
-                else {
-                    drawCardFromPileAndCheckPlayability();
+                
+                Card drawnCard = currentPlayer.pickCard(env.getDrawPile() , 1).removeFirst();
+                System.out.println(currentPlayer.getName() + " draws " + drawnCard);
+
+                if (canPlayDrawnCard(drawnCard)) {
+                    System.out.println(currentPlayer.getName() + " plays the drawn card: " + drawnCard.getName());
+                    env.getDiscardPile().pushCard(drawnCard);
                 }
             }
             
@@ -96,10 +75,11 @@ public class Referee {
                     env.getNextPlayer(currentPlayer).pickCard(env.getDrawPile(), 4);
                     break;
                     case ActionCardEnum.SHUFFLE:
-                    env.shuffle();
+                    shuffle();
+                    break;
                 }
             }
-            
+            System.out.println(currentPlayer.getName() + currentPlayer.getHand().size());
             if (currentPlayer.hasNoCards()) {
                 System.out.println(currentPlayer.getName() + " has no cards left! Round over.");
                 return true;
@@ -112,20 +92,24 @@ public class Referee {
         return false;
     }
 
-    private void drawCardFromPileAndCheckPlayability() {
-        Card drawnCard = currentPlayer.pickCard(env.getDrawPile(),1).removeFirst();
-        System.out.println(currentPlayer.getName() + " draws " + drawnCard);
+    private void shuffle() {
+        Player tempCurrentPlayer = currentPlayer;
+        currentPlayer = env.getNextPlayer(currentPlayer);
+        DrawPile pile = env.shuffle();
 
-        if (canPlayDrawnCard(drawnCard)) {
-            System.out.println(currentPlayer.getName() + " plays the drawn card: " + drawnCard);
-            env.getDiscardPile().pushCard(drawnCard);
+        while (!pile.returnAllCards().isEmpty()) {
+            currentPlayer.pickCard(pile, 1);
+            currentPlayer = env.getNextPlayer(currentPlayer); 
         }
+        currentPlayer = tempCurrentPlayer;
     }
-
-
     public void playGame() {
         int roundNumber = 1;
         boolean gameOver = false;
+
+        this.setFirstPlayer();
+        this.dealInitialCards();
+        this.initializeDiscardPile();
 
         while (!gameOver) {
             System.out.println("\n========== ROUND " + roundNumber + " ==========");
@@ -140,8 +124,15 @@ public class Referee {
             }
             roundNumber++;
 
-            if (!gameOver)
-                resetForNewRound();
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Press anywhere to continue...");
+            scanner.nextLine();
+            scanner.close();
+
+            resetForNewRound();
+            
+
+
         }
     }
     private void playRound() {
@@ -154,7 +145,7 @@ public class Referee {
             
             if (roundOver) {
                 calculateRoundPoints(currentPlayer, env.getAllPlayers());
-                GameStateRecorder.recordGameState(env.getAllPlayers(), "Round");
+                recorder.recordGameState(env.getAllPlayers(), "Round");
             }
         }
     }
@@ -226,7 +217,9 @@ public class Referee {
         
         // Print each player's hand
         for (Player player : env.getAllPlayers()) {
-            System.out.println(player.getName() + "'s hand: " + player.getHand());
+            for (Card c : player.getHand()) {
+            System.out.println(player.getName() + "'s hand: " + c.getName());
+            }
         }
     }
 
@@ -234,7 +227,7 @@ public class Referee {
         Card topCard = env.getDrawPile().drawCard(1).removeFirst();
         env.getDiscardPile().pushCard(topCard);
         
-        System.out.println("\nStarting card on discard pile: " + topCard);
+        System.out.println("\nStarting card on discard pile: " + topCard.getName());
     }
 
     private void setFirstPlayer() {

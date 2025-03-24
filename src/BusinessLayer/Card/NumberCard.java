@@ -5,8 +5,8 @@ import src.BusinessLayer.Enum.CardColor;
 public class NumberCard extends Card {
     private int number;
 
-    public NumberCard(CardColor color, int number) {
-        super(color, number);
+    public NumberCard(int number, CardColor color, Integer point) {
+        super(color, point);
         this.number = number;
     }
 
@@ -14,4 +14,11 @@ public class NumberCard extends Card {
         return number;
     }
 
+    public String toString() {
+        return "NumberCard{" +
+                "number=" + number +
+                ", color=" + getColor() +
+                ", point=" + getPoint() +
+                '}';
+    }
 }

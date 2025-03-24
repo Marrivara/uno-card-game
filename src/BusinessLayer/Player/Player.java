@@ -19,8 +19,10 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
+        this.validCards = new ArrayList<>();
         this.score = 0;
         strategy = new CardStrategy();
+        rules = new GameRules();
     }
 
     public String getName() {
@@ -36,7 +38,7 @@ public class Player {
         
         if(!validCards.isEmpty()) {
             Card cardToPlay = strategy.chooseCardToPlay(validCards, topCard);
-            System.out.println(this.getName() + " plays " + cardToPlay);
+            System.out.println(this.getName() + " plays " + cardToPlay.getName());
             hand.remove(cardToPlay);
             return cardToPlay;
         }
@@ -56,13 +58,16 @@ public class Player {
     }
 
     public ArrayList<Card> pickCard(DrawPile pile, int amount) {
+        if (pile.returnAllCards().size() < amount) {
+            amount = pile.returnAllCards().size();
+        }
         ArrayList<Card> temp = pile.drawCard(amount);
-        hand.addAll(temp);
+            hand.addAll(temp);
         return temp;
     }
     
     public ArrayList<Card> returnAllCards() {
-        ArrayList<Card> temp = hand;
+        ArrayList<Card> temp = new ArrayList<>(hand);
         hand.clear();
         return temp;
     }
@@ -87,7 +92,8 @@ public class Player {
     }
 
     private void findValidCards(Card topCard) {
-        validCards.clear();
+        if(validCards != null)
+            validCards.clear();
         boolean hasMatchingColor = false;
         for (Card card : this.getHand()) {
             if (card.getColor().equals(topCard.getColor())) {

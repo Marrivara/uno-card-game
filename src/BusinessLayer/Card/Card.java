@@ -18,4 +18,13 @@ public abstract class Card {
     public Integer getPoint() {
         return point;
     }
+    public String getName() {
+        String str = new String();
+        if (this instanceof ActionCard)
+            str = ((ActionCard) this).getActionType().toString();
+        else
+            str = this.getPoint().toString();
+        return str;
+    }
+        
 }

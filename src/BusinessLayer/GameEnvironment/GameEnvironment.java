@@ -11,26 +11,21 @@ public class GameEnvironment {
     private ArrayList<Player> player_list;
     private DiscardPile discardPile;
     private DrawPile drawPile;
-    private Deck initialDeck;
-
+    private DrawPile shufflePile;
+    
     private boolean validGame;
-    private boolean isGameBegun;
     
 
     public GameEnvironment() {
         player_list = new ArrayList<>();
         discardPile = new DiscardPile();
         drawPile = new DrawPile();
-        initialDeck = new Deck();
+        shufflePile = new DrawPile();
 
         validGame = false;
-        isGameBegun = false;
     }
 
     public void addPlayer(Player player) {
-        if (isGameBegun) {
-            throw new IllegalStateException("Cannot add players after the game has begun!");
-        }
         player_list.add(player);
         validGame = player_list.size() >= 2;
     }
@@ -59,20 +54,16 @@ public class GameEnvironment {
         return getNextPlayer(getNextPlayer(currentPlayer));
     }
 
-    public ArrayList<Card> shuffle() {
+    public DrawPile shuffle() {
         checkExceptions("shuffle");
 
-        ArrayList<Card> deck = new ArrayList<>();
-        
-        deck.addAll(this.discardPile.returnAllCards());
-        deck.addAll(this.drawPile.returnAllCards());
 
         for (Player p : player_list) {
-            deck.addAll(p.returnAllCards());
+            shufflePile.addDeck(p.returnAllCards());
         }
 
-        Collections.shuffle(deck);
-        return deck;
+        Collections.shuffle(shufflePile.returnAllCards());
+        return shufflePile;
     }
 
     public DrawPile getDrawPile() {
@@ -83,8 +74,8 @@ public class GameEnvironment {
         return discardPile;
     }
 
-    public Deck getInitialDeck() {
-        return initialDeck;
+    public DrawPile getShufflePile() {
+        return shufflePile;
     }
 
     public void reshuffleDiscardToDraw() {
@@ -98,9 +89,7 @@ public class GameEnvironment {
 
 
     private void checkExceptions(String e) {
-        if (!isGameBegun) {
-            throw new IllegalStateException(e + ": Game has not begun!");
-        }
+
         if (!validGame) {
             throw new IllegalStateException(e + ": Game is not valid!");
         }

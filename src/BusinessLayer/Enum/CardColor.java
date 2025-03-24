@@ -5,5 +5,5 @@ public enum CardColor {
     GREEN,
     RED,
     YELLOW,
-    BLACK,
+    BLACK
 }
