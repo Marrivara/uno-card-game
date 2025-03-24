@@ -122,24 +122,22 @@ public class Referee {
         while (!gameOver) {
             System.out.println("\n========== ROUND " + roundNumber + " ==========");
             playRound();
-        }
-        for (Player p : env.getAllPlayers()) {
-            if (p.getScore() >= GameRules.WINNING_SCORE) {
-                gameOver = true;
-                System.out.println("\n" + p.getName() + " won the game!");
-                System.out.println("Score: " + p.getScore());
-                break;
+            for (Player p : env.getAllPlayers()) {
+                if (p.getScore() >= GameRules.WINNING_SCORE) {
+                    gameOver = true;
+                    System.out.println("\n" + p.getName() + " won the game!");
+                    System.out.println("Score: " + p.getScore());
+                    break;
+                }
+                roundNumber++;
+
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Press anywhere to continue...");
+                scanner.nextLine();
+                scanner.close();
+
+                resetForNewRound();
             }
-            roundNumber++;
-
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Press anywhere to continue...");
-            scanner.nextLine();
-            scanner.close();
-
-            resetForNewRound();
-
-
         }
     }
 
