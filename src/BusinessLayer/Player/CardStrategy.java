@@ -7,27 +7,13 @@ import java.util.Random;
 import src.BusinessLayer.Card.*;
 import src.BusinessLayer.Enum.ActionCardEnum;
 
-/**
- * The CardStrategy class implements strategy for choosing which card to play.
- */
 public class CardStrategy {
     private Random random;
-    
-    /**
-     * Creates a new card strategy with the given random generator.
-     * 
-     */
+
     public CardStrategy() {
         this.random = new Random();
     }
-    
-    /**
-     * Chooses a card to play based on the rules.
-     * 
-     * @param playableCards The list of playable cards
-     * @param topCard The top card on the discard pile
-     * @return The chosen card to play
-     */
+
     public Card chooseCardToPlay(List<Card> playableCards, Card topCard) {
         // Check if Wild or Shuffle Hands is in playable cards (can always be played)
         for (Card card : playableCards) {
@@ -84,13 +70,7 @@ public class CardStrategy {
             return playableCards.get(random.nextInt(playableCards.size()));
         }
     }
-    
-    /**
-     * Gets the card with the highest value from a list of cards.
-     * 
-     * @param cards The list of cards
-     * @return The card with the highest value
-     */
+
     private Card getHighestValueCard(List<Card> cards) {
         Card highestCard = cards.get(0);
         int highestValue = highestCard.getPoint();

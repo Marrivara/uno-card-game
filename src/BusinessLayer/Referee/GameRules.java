@@ -3,24 +3,13 @@ package src.BusinessLayer.Referee;
 import src.BusinessLayer.Card.*;
 import src.BusinessLayer.Enum.ActionCardEnum;
 
-/**
- * The GameRules class contains constants and methods related to the rules of the Duo Card Game.
- */
 public class GameRules {
     // Game constants
     public static final int WINNING_SCORE = 500;
     public static final int INITIAL_HAND_SIZE = 7;
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 4;
-    
-    /**
-     * Determines if a card can be played on the current top card.
-     * 
-     * @param card The card to check
-     * @param topCard The top card on the discard pile
-     * @param hasMatchingColor Whether the player has any cards matching the top card's color
-     * @return true if the card can be played, false otherwise
-     */
+
     public boolean isCardPlayable(Card card, Card topCard, boolean hasMatchingColor) {
         // Wild and Shuffle Hands can always be played
         if (card instanceof ActionCard) {
