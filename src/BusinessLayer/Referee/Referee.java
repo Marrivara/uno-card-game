@@ -110,7 +110,7 @@ public class Referee {
             if (currentPlayer.getHand().size() == 7)
                 counter++;
             currentPlayer = env.getNextPlayer(currentPlayer);
-            if (counter == 7)
+            if (counter == numberOfPlayers)
                 break;
         }
         currentPlayer = tempCurrentPlayer;
