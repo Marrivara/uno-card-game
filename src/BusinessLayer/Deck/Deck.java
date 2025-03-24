@@ -6,6 +6,7 @@ import src.BusinessLayer.Enum.ActionCardEnum;
 import src.BusinessLayer.Enum.CardColor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -21,6 +22,8 @@ public class Deck {
         System.out.println("Action cards: " + actionCards.size());
         deck.addAll(numberCards);
         deck.addAll(actionCards);
+        // shuffle the deck
+        Collections.shuffle(this.deck);
     }
 
     private List<Card> createNumberCards() {
