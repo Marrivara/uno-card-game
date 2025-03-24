@@ -29,7 +29,7 @@ public class Referee {
         Random rand = new Random();
         numberOfPlayers = rand.nextInt(3) + 2;
         for (int i = 0; i < numberOfPlayers; i++) {
-            Player newPlayer = new Player("Player" + i);
+            Player newPlayer = new Player("Player " + i);
             env.addPlayer(newPlayer);
         }
         env.getDrawPile().addDeck(deck.getDeck());
@@ -86,7 +86,6 @@ public class Referee {
                     break;
             }
         }
-        System.out.println(currentPlayer.getName() + currentPlayer.getHand().size());
         if (currentPlayer.hasNoCards()) {
             System.out.println(currentPlayer.getName() + " has no cards left! Round over.");
             return true;
@@ -137,10 +136,10 @@ public class Referee {
                 }
                 roundNumber++;
 
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Press anywhere to continue...");
-                scanner.nextLine();
-                scanner.close();
+//                Scanner scanner = new Scanner(System.in);
+//                System.out.println("Press anywhere to continue...");
+//                scanner.nextLine();
+//                scanner.close();
 
                 resetForNewRound();
             }
@@ -199,11 +198,13 @@ public class Referee {
             p.getHand().clear();
         }
 
-        env.shuffle();
-
         // Move dealer position to the next player
         dealerIndex = (dealerIndex + 1) % env.getAllPlayers().size();
         System.out.println("\nNew dealer: " + env.getAllPlayers().get(dealerIndex).getName());
+
+        env.getDrawPile().clearPile();
+        env.getDiscardPile().clearPile();
+        env.getDrawPile().addDeck(deck.getDeck());
 
         // Deal cards again
         dealInitialCards();

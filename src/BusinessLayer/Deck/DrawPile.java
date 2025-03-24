@@ -14,6 +14,8 @@ public class DrawPile extends Pile {
         setStack(deck);
     }
 
+
+
     public ArrayList<Card> drawCard(int amount) {
         ArrayList<Card> temp = new ArrayList<>();
         for (int i = 0; i < amount; i++) {

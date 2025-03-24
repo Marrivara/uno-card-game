@@ -13,6 +13,10 @@ public abstract class Pile {
         cards = new Stack<Card>();
     }
 
+    public void clearPile() {
+        cards.clear();
+    }
+
     public ArrayList<Card> returnAllCards() {
         return new ArrayList<Card>(cards);
     }
