@@ -13,7 +13,6 @@ public class GameEnvironment {
     private DrawPile drawPile;
     
     private boolean validGame;
-    private boolean isGameBegun;
     
 
     public GameEnvironment() {
@@ -22,13 +21,9 @@ public class GameEnvironment {
         drawPile = new DrawPile();
 
         validGame = false;
-        isGameBegun = false;
     }
 
     public void addPlayer(Player player) {
-        if (isGameBegun) {
-            throw new IllegalStateException("Cannot add players after the game has begun!");
-        }
         player_list.add(player);
         validGame = player_list.size() >= 2;
     }
@@ -92,9 +87,7 @@ public class GameEnvironment {
 
 
     private void checkExceptions(String e) {
-        if (!isGameBegun) {
-            throw new IllegalStateException(e + ": Game has not begun!");
-        }
+
         if (!validGame) {
             throw new IllegalStateException(e + ": Game is not valid!");
         }

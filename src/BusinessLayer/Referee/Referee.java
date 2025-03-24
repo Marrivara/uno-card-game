@@ -1,15 +1,14 @@
 package src.BusinessLayer.Referee;
 
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
+import java.util.Scanner;
 
 import src.BusinessLayer.Player.Player;
-import src.BusinessLayer.Deck.DiscardPile;
 import src.BusinessLayer.Enum.ActionCardEnum;
 import src.BusinessLayer.GameEnvironment.GameEnvironment;
-import src.BusinessLayer.Card.ActionCard;
-import src.BusinessLayer.Card.Card;
+import src.BusinessLayer.Deck.*;
+import src.BusinessLayer.Card.*;
 
 public class Referee {
     private GameRules rules;
@@ -17,12 +16,23 @@ public class Referee {
     private GameEnvironment env;
     private GameStateRecorder recorder;
     private int dealerIndex;
+    private int numberOfPlayers;
+    private Deck deck;
 
     public Referee() {
         this.rules = new GameRules();
         this.env = new GameEnvironment();
         this.recorder= new GameStateRecorder();
+        deck = new Deck();
         dealerIndex = 0;
+
+        Random rand = new Random();
+        numberOfPlayers = rand.nextInt(3) + 2;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            Player newPlayer = new Player("Player" + i);
+            env.addPlayer(newPlayer);
+        }
+        env.getDrawPile().addDeck(deck.getDeck());
     }
 
     public boolean playerTurn() {
@@ -84,12 +94,16 @@ public class Referee {
         int roundNumber = 1;
         boolean gameOver = false;
 
+        this.setFirstPlayer();
+        this.dealInitialCards();
+        this.initializeDiscardPile();
+
         while (!gameOver) {
             System.out.println("\n========== ROUND " + roundNumber + " ==========");
             playRound();
         }
         for (Player p : env.getAllPlayers()) {
-            if (p.getScore() >= rules.WINNING_SCORE) {
+            if (p.getScore() >= GameRules.WINNING_SCORE) {
                 gameOver = true;
                 System.out.println("\n" + p.getName() + " won the game!");
                 System.out.println("Score: " + p.getScore());
@@ -97,8 +111,15 @@ public class Referee {
             }
             roundNumber++;
 
-            if (!gameOver)
-                resetForNewRound();
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Press anywhere to continue...");
+            scanner.nextLine();
+            scanner.close();
+
+            resetForNewRound();
+            
+
+
         }
     }
     private void playRound() {
@@ -171,7 +192,7 @@ public class Referee {
 
     private void dealInitialCards() {
         System.out.println("\n--- Dealing Initial Cards ---");
-        for (int i = 0; i < rules.INITIAL_HAND_SIZE; i++) {
+        for (int i = 0; i < GameRules.INITIAL_HAND_SIZE; i++) {
             for (int j = 0; j < env.getAllPlayers().size(); j++) {
                 // Calculate player index starting from the left of the dealer
                 int playerIndex = (dealerIndex + 1 + j) % env.getAllPlayers().size();

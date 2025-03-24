@@ -19,8 +19,10 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
+        this.validCards = new ArrayList<>();
         this.score = 0;
         strategy = new CardStrategy();
+        rules = new GameRules();
     }
 
     public String getName() {
@@ -87,7 +89,8 @@ public class Player {
     }
 
     private void findValidCards(Card topCard) {
-        validCards.clear();
+        if(validCards != null)
+            validCards.clear();
         boolean hasMatchingColor = false;
         for (Card card : this.getHand()) {
             if (card.getColor().equals(topCard.getColor())) {

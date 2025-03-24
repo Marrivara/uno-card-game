@@ -3,22 +3,22 @@ package src.BusinessLayer.Deck;
 import src.BusinessLayer.Card.ActionCard;
 import src.BusinessLayer.Card.Card;
 import src.BusinessLayer.Card.NumberCard;
-import src.BusinessLayer.DataTypes.Bag;
 import src.BusinessLayer.Enum.ActionCardEnum;
 import src.BusinessLayer.Enum.CardColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 
 public class Deck {
 
-    private Bag<Card> cards;
+    private ArrayList<Card> deck;
 
     public Deck() {
-        cards = new Bag<Card>();
-        cards.addAll(createNumberCards());
-        cards.addAll(createActionCards());
+        deck = new ArrayList<Card>();
+        deck.addAll(createNumberCards());
+        deck.addAll(createActionCards());
     }
 
     private List<Card> createNumberCards() {
@@ -58,4 +58,7 @@ public class Deck {
         return actionCards;
     }
 
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
 }

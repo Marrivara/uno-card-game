@@ -1,6 +1,9 @@
+import src.BusinessLayer.Referee.Referee;
+
 public class UnoCardGame {
 
     public static void main(String[] args) {
-        System.out.println(2);
+        Referee ref = new Referee();
+        ref.playGame();
     }
 }
