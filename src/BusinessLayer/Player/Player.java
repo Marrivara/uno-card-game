@@ -62,7 +62,7 @@ public class Player {
             amount = pile.returnAllCards().size();
         }
         ArrayList<Card> temp = pile.drawCard(amount);
-            hand.addAll(temp);
+        hand.addAll(temp);
         return temp;
     }
     

@@ -57,7 +57,6 @@ public class GameEnvironment {
     public DrawPile shuffle() {
         checkExceptions("shuffle");
 
-
         for (Player p : player_list) {
             shufflePile.addDeck(p.returnAllCards());
         }

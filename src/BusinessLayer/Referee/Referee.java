@@ -35,6 +35,8 @@ public class Referee {
         env.getDrawPile().addDeck(deck.getDeck());
     }
 
+
+
     public boolean playerTurn() {
         Card topCard = env.getDiscardPile().peekTopCard();
         System.out.println("Top card: " + topCard.getName());
@@ -136,12 +138,6 @@ public class Referee {
                     break;
                 }
                 roundNumber++;
-
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Press anywhere to continue...");
-                scanner.nextLine();
-                scanner.close();
-
                 resetForNewRound();
             }
         }
