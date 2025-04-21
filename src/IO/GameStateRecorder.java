@@ -1,4 +1,4 @@
-package src.BusinessLayer.Referee;
+package src.IO;
 
 import src.BusinessLayer.Player.Player;
 import java.io.FileWriter;

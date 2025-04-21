@@ -19,7 +19,7 @@ public abstract class Card {
         return point;
     }
     public String getName() {
-        String str = new String();
+        String str;
         if (this instanceof ActionCard)
             str = ((ActionCard) this).getActionType().toString();
         else

@@ -2,13 +2,13 @@ package src.BusinessLayer.Referee;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 import src.BusinessLayer.Player.Player;
 import src.BusinessLayer.Enum.ActionCardEnum;
 import src.BusinessLayer.GameEnvironment.GameEnvironment;
 import src.BusinessLayer.Deck.*;
 import src.BusinessLayer.Card.*;
+import src.IO.GameStateRecorder;
 
 public class Referee {
     private GameRules rules;
@@ -135,12 +135,6 @@ public class Referee {
                     break;
                 }
                 roundNumber++;
-
-//                Scanner scanner = new Scanner(System.in);
-//                System.out.println("Press anywhere to continue...");
-//                scanner.nextLine();
-//                scanner.close();
-
                 resetForNewRound();
             }
         }

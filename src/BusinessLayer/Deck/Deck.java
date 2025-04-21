@@ -22,7 +22,6 @@ public class Deck {
         System.out.println("Action cards: " + actionCards.size());
         deck.addAll(numberCards);
         deck.addAll(actionCards);
-        // shuffle the deck
         Collections.shuffle(this.deck);
     }
 
