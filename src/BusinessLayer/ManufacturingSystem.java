@@ -8,6 +8,12 @@ import src.IO.CSVParser;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * ManufacturingSystem class
+ * This class represents the main entry point for the manufacturing system.
+ * It handles the loading of components and products,
+ * the manufacturing process, and the reporting of results.
+ */
 public class ManufacturingSystem {
 
     public void start() {

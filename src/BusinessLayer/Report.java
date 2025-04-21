@@ -5,6 +5,12 @@ import src.BusinessLayer.states.enums.ReasonOfFailure;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Report class
+ * This class is responsible for generating a report of the manufacturing process.
+ * It keeps track of successful and failed manufacturing processes.
+ * It also provides a method to print the report.
+ */
 public class Report {
     private int successfulCount;
     private int systemErrorCount;
@@ -20,6 +26,10 @@ public class Report {
         this.successfulProducts = new ArrayList<>();
     }
 
+    /**
+     * Adds a result to the report based on the manufacturing process.
+     * @param process The manufacturing process to be added to the report.
+     */
     public void addResult(ManufacturingProcess process) {
         if (process.isSuccessful()) {
             successfulCount++;
@@ -40,6 +50,9 @@ public class Report {
         }
     }
 
+    /**
+     * Prints the report of the manufacturing process.
+     */
     public void printReport() {
         System.out.println("\n***** Manufacturing Report *****");
         System.out.println("1. Successfully Manufactured Products: " + successfulCount);
@@ -56,7 +69,11 @@ public class Report {
         System.out.println("******************************");
     }
 
-    // inner class
+    /**
+     * ProductResult class
+     * This class represents a product result in the report.
+     * It contains the product name, cost, and weight.
+     */
     private class ProductResult {
         private String name;
         private double cost;

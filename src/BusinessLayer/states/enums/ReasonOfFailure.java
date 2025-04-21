@@ -1,5 +1,8 @@
 package src.BusinessLayer.states.enums;
 
+/**
+ * Enum representing the reasons for failure in the manufacturing process.
+ */
 public enum ReasonOfFailure {
     NOT_ENOUGH_STOCK("Not Enough Stock"),
     SYSTEM_ERROR("System Error"),

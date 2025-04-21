@@ -7,6 +7,11 @@ import src.BusinessLayer.states.enums.ReasonOfFailure;
 
 import java.util.Random;
 
+/**
+ * InManufacturingState class
+ * This class represents the in-manufacturing state of the manufacturing process.
+ * It implements the ManufacturingState interface.
+ */
 public class InManufacturingState implements ManufacturingState {
     private Random random = new Random();
 

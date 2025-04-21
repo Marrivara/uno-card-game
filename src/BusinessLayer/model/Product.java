@@ -6,6 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Product class representing a product in the system.
+ * It can contain other components.
+ */
 public class Product implements Component {
     private String id;
     private String name;

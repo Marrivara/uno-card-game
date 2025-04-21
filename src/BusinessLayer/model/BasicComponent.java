@@ -2,6 +2,9 @@ package src.BusinessLayer.model;
 
 import src.BusinessLayer.model.Interfaces.Component;
 
+/**
+ * Abstract class representing a basic component in the system.
+ */
 public abstract class BasicComponent implements Component {
     protected String id;
     protected String name;

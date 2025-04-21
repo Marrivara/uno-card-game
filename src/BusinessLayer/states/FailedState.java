@@ -4,6 +4,11 @@ import src.BusinessLayer.ManufacturingProcess;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
 import src.BusinessLayer.states.enums.ReasonOfFailure;
 
+/**
+ * FailedState class
+ * This class represents the failed state of the manufacturing process.
+ * It implements the ManufacturingState interface.
+ */
 public class FailedState implements ManufacturingState {
     private ReasonOfFailure reason;
 

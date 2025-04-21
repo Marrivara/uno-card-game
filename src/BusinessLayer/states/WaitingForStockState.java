@@ -5,6 +5,11 @@ import src.BusinessLayer.model.Product;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
 import src.BusinessLayer.states.enums.ReasonOfFailure;
 
+/**
+ * WaitingForStockState class
+ * This class represents the waiting for stock state of the manufacturing process.
+ * It implements the ManufacturingState interface.
+ */
 public class WaitingForStockState implements ManufacturingState {
     @Override
     public void process(ManufacturingProcess process) {

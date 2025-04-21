@@ -5,6 +5,9 @@ import src.BusinessLayer.model.Interfaces.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Inventory class to manage components.
+ */
 public class Inventory {
     private Map<String, Component> components;
 

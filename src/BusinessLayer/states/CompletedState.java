@@ -4,7 +4,11 @@ import src.BusinessLayer.ManufacturingProcess;
 import src.BusinessLayer.model.Product;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
 
-// Completed state
+/**
+ * CompletedState class
+ * This class represents the completed state of the manufacturing process.
+ * It implements the ManufacturingState interface.
+ */
 public class CompletedState implements ManufacturingState {
     @Override
     public void process(ManufacturingProcess process) {

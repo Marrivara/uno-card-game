@@ -9,7 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CSVParser class to load components and product orders from CSV files.
+ * It handles the parsing of the CSV files and creates
+ * the corresponding objects in the system.
+ */
 public class CSVParser {
+    /**
+     * Loads components from a CSV file.
+     */
     public static Inventory loadComponents(String filename) throws IOException {
         Inventory inventory = new Inventory();
         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -60,6 +68,13 @@ public class CSVParser {
         return inventory;
     }
 
+    /**
+     * Loads product orders from a CSV file.
+     * @param filename File name of the CSV file
+     * @param inventory Inventory object containing components
+     * @return List of ProductOrder objects
+     * @throws IOException If an error occurs while reading the file
+     */
     public static List<ProductOrder> loadProducts(String filename, Inventory inventory) throws IOException {
         List<ProductOrder> orders = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(filename));

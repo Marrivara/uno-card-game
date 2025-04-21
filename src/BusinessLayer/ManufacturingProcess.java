@@ -4,7 +4,10 @@ import src.BusinessLayer.model.Product;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
 import src.BusinessLayer.states.WaitingForStockState;
 
-// Manufacturing Process class (Context in State Pattern)
+/**
+ * ManufacturingProcess class
+ * This class represents the manufacturing process of a product.
+ */
 public class ManufacturingProcess {
     private Product product;
     private ManufacturingState state;
