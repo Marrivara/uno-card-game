@@ -2,13 +2,12 @@ package src.BusinessLayer.states;
 
 import src.BusinessLayer.ManufacturingProcess;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
-import src.BusinessLayer.states.enums.FailureReason;
+import src.BusinessLayer.states.enums.ReasonOfFailure;
 
-// Failed state
 public class FailedState implements ManufacturingState {
-    private FailureReason reason;
+    private ReasonOfFailure reason;
 
-    public FailedState(FailureReason reason) {
+    public FailedState(ReasonOfFailure reason) {
         this.reason = reason;
     }
 
@@ -17,14 +16,5 @@ public class FailedState implements ManufacturingState {
         System.out.println("Manufacturing failed: " + reason.getDescription());
         process.setSuccessful(false);
         process.setFailureReason(reason.getDescription());
-    }
-
-    @Override
-    public String getStateName() {
-        return "Failed: " + reason.getDescription();
-    }
-
-    public FailureReason getReason() {
-        return reason;
     }
 }

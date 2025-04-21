@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-// CSV parser utility (Pure Fabrication GRASP pattern)
 public class CSVParser {
     public static Inventory loadComponents(String filename) throws IOException {
         Inventory inventory = new Inventory();
@@ -26,13 +25,11 @@ public class CSVParser {
             String[] parts = line.split(";");
             if (parts.length >= 5) {
                 String name = parts[0].trim();
-                // Use the component name as the ID
                 String id = name;
-                // Replace comma with period in decimal values
                 String costStr = parts[1].trim().replace(',', '.');
                 String weightStr = parts[2].trim().replace(',', '.');
                 String type = parts[3].trim();
-                String stockStr = parts[4].trim().split(" ")[0]; // Get just the number part
+                String stockStr = parts[4].trim().split(" ")[0];
 
                 double price = Double.parseDouble(costStr);
                 double weight = Double.parseDouble(weightStr);
@@ -68,7 +65,6 @@ public class CSVParser {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line;
 
-        // Read the header line to get component names
         String headerLine = reader.readLine();
         if (headerLine == null) {
             reader.close();
@@ -81,25 +77,22 @@ public class CSVParser {
             throw new IOException("Invalid products file format");
         }
 
-        // Skip the "Product Name" and get component names
         List<String> componentNames = new ArrayList<>();
         for (int i = 1; i < headers.length - 1; i++) {
             componentNames.add(headers[i].trim());
         }
 
-        // Process product rows
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(";");
             if (parts.length < componentNames.size() + 2) {
-                continue; // Skip invalid rows
+                continue;
             }
 
             String productName = parts[0].trim();
-            String id = productName; // Use product name as ID
+            String id = productName;
 
             Product product = new Product(id, productName);
 
-            // Add components based on quantities
             for (int i = 1; i < parts.length - 1; i++) {
                 if (i - 1 < componentNames.size()) {
                     String componentName = componentNames.get(i - 1);
@@ -107,7 +100,7 @@ public class CSVParser {
 
                     if (!quantityStr.isEmpty() && !quantityStr.equals("0")) {
                         try {
-                            // Parse as double then convert to int as needed
+
                             double quantityDouble = Double.parseDouble(quantityStr);
 
                             Component component = inventory.getComponent(componentName);
@@ -125,18 +118,16 @@ public class CSVParser {
                 }
             }
 
-            // Get the quantity to manufacture from the last column
             int orderQuantity = Integer.parseInt(parts[parts.length - 1].trim());
             orders.add(new ProductOrder(product, orderQuantity));
             System.out.println("Loaded product order: " + product.getName() +
-                    " (Quantity: " + orderQuantity + ")");
+                    " (Quantity: " + orderQuantity + ")\n");
         }
 
         reader.close();
         return orders;
     }
 
-    // ProductOrder class to store product orders (Pure Fabrication GRASP pattern)
     public static class ProductOrder {
         private Product product;
         private int quantity;

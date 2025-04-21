@@ -2,14 +2,14 @@ package src.BusinessLayer.model;
 
 import src.BusinessLayer.model.Interfaces.Component;
 
-public abstract class SimpleComponent implements Component {
+public abstract class BasicComponent implements Component {
     protected String id;
     protected String name;
     protected double price;
     protected double weight;
     protected int stock;
 
-    public SimpleComponent(String id, String name, double price, double weight, int stock) {
+    public BasicComponent(String id, String name, double price, double weight, int stock) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -38,21 +38,21 @@ public abstract class SimpleComponent implements Component {
     }
 
     @Override
-    public boolean isAvailable(int quantity) {
+    public boolean doesExists(int quantity) {
         return stock >= quantity;
     }
 
     @Override
-    public void decreaseStock(int quantity) {
+    public void decreaseStockByQuantity(int quantity) {
         if (stock >= quantity) {
             stock -= quantity;
         } else {
-            throw new IllegalArgumentException("Insufficient stock for " + name);
+            throw new IllegalArgumentException("Not enough stock for " + name);
         }
     }
 
     @Override
-    public void increaseStock(int quantity) {
+    public void increaseStockByQuantity(int quantity) {
         stock += quantity;
     }
 

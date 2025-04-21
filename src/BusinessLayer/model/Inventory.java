@@ -2,11 +2,9 @@ package src.BusinessLayer.model;
 
 import src.BusinessLayer.model.Interfaces.Component;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-// Inventory class to manage components (Information Expert GRASP pattern)
 public class Inventory {
     private Map<String, Component> components;
 
@@ -22,15 +20,11 @@ public class Inventory {
         return components.get(id);
     }
 
-    public Collection<Component> getAllComponents() {
-        return components.values();
-    }
-
     public void printInventory() {
-        System.out.println("===== Current Inventory =====");
+        System.out.println("****** Current Inventory ******");
         for (Component component : components.values()) {
             System.out.println(component);
         }
-        System.out.println("============================");
+        System.out.println("****************************");
     }
 }

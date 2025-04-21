@@ -3,9 +3,8 @@ package src.BusinessLayer.states;
 import src.BusinessLayer.ManufacturingProcess;
 import src.BusinessLayer.model.Product;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
-import src.BusinessLayer.states.enums.FailureReason;
+import src.BusinessLayer.states.enums.ReasonOfFailure;
 
-// WaitingForStock state
 public class WaitingForStockState implements ManufacturingState {
     @Override
     public void process(ManufacturingProcess process) {
@@ -16,13 +15,8 @@ public class WaitingForStockState implements ManufacturingState {
             System.out.println("All components available for " + product.getName());
             process.setState(new InManufacturingState());
         } else {
-            System.out.println("Stock shortage for " + product.getName());
-            process.setState(new FailedState(FailureReason.STOCK_SHORTAGE));
+            System.out.println("Not enough stock for " + product.getName());
+            process.setState(new FailedState(ReasonOfFailure.NOT_ENOUGH_STOCK));
         }
-    }
-
-    @Override
-    public String getStateName() {
-        return "WaitingForStock";
     }
 }

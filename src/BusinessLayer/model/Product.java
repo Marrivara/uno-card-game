@@ -1,11 +1,6 @@
 package src.BusinessLayer.model;
 
-// Product (Composite) implementation
 import src.BusinessLayer.model.Interfaces.Component;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,7 +10,7 @@ public class Product implements Component {
     private String id;
     private String name;
     private int stock;
-    private Map<Component, Double> components; // Component and quantity needed (can be decimal)
+    private Map<Component, Double> components;
 
     public Product(String id, String name) {
         this.id = id;
@@ -40,29 +35,29 @@ public class Product implements Component {
 
     @Override
     public double getPrice() {
-        double total = 0;
+        double sum = 0;
         for (Map.Entry<Component, Double> entry : components.entrySet()) {
-            total += entry.getKey().getPrice() * entry.getValue();
+            sum += entry.getKey().getPrice() * entry.getValue();
         }
-        return total;
+        return sum;
     }
 
     @Override
     public double getWeight() {
-        double total = 0;
+        double sum = 0;
         for (Map.Entry<Component, Double> entry : components.entrySet()) {
-            total += entry.getKey().getWeight() * entry.getValue();
+            sum += entry.getKey().getWeight() * entry.getValue();
         }
-        return total;
+        return sum;
     }
 
     @Override
-    public boolean isAvailable(int quantity) {
+    public boolean doesExists(int quantity) {
         return stock >= quantity;
     }
 
     @Override
-    public void decreaseStock(int quantity) {
+    public void decreaseStockByQuantity(int quantity) {
         if (stock >= quantity) {
             stock -= quantity;
         } else {
@@ -71,7 +66,7 @@ public class Product implements Component {
     }
 
     @Override
-    public void increaseStock(int quantity) {
+    public void increaseStockByQuantity(int quantity) {
         stock += quantity;
     }
 
@@ -81,9 +76,8 @@ public class Product implements Component {
 
     public boolean areComponentsAvailable() {
         for (Map.Entry<Component, Double> entry : components.entrySet()) {
-            // Convert decimal quantities to integer by ceiling (to ensure enough stock)
             int requiredQuantity = (int) Math.ceil(entry.getValue());
-            if (!entry.getKey().isAvailable(requiredQuantity)) {
+            if (!entry.getKey().doesExists(requiredQuantity)) {
                 return false;
             }
         }
@@ -92,9 +86,8 @@ public class Product implements Component {
 
     public void consumeComponents() {
         for (Map.Entry<Component, Double> entry : components.entrySet()) {
-            // Convert decimal quantities to integer by ceiling (to ensure enough stock)
             int requiredQuantity = (int) Math.ceil(entry.getValue());
-            entry.getKey().decreaseStock(requiredQuantity);
+            entry.getKey().decreaseStockByQuantity(requiredQuantity);
         }
     }
 

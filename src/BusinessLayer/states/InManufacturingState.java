@@ -3,11 +3,10 @@ package src.BusinessLayer.states;
 import src.BusinessLayer.ManufacturingProcess;
 import src.BusinessLayer.model.Product;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
-import src.BusinessLayer.states.enums.FailureReason;
+import src.BusinessLayer.states.enums.ReasonOfFailure;
 
 import java.util.Random;
 
-// InManufacturing state
 public class InManufacturingState implements ManufacturingState {
     private Random random = new Random();
 
@@ -16,37 +15,27 @@ public class InManufacturingState implements ManufacturingState {
         Product product = process.getProduct();
         System.out.println("Manufacturing: " + product.getName());
 
-        // Check if components are available again (just to be safe)
         if (!product.areComponentsAvailable()) {
-            System.out.println("Stock shortage detected during manufacturing for " + product.getName());
-            process.setState(new FailedState(FailureReason.STOCK_SHORTAGE));
+            System.out.println("Not enough stock during manufacturing for " + product.getName());
+            process.setState(new FailedState(ReasonOfFailure.NOT_ENOUGH_STOCK));
             return;
         }
 
-        // Random manufacturing outcome (1-3)
         int outcome = random.nextInt(3) + 1;
         switch (outcome) {
             case 1:
-                // Successful manufacturing
                 System.out.println("Successfully manufactured " + product.getName());
                 product.consumeComponents();
                 process.setState(new CompletedState());
                 break;
             case 2:
-                // System error
                 System.out.println("System error during manufacturing of " + product.getName());
-                process.setState(new FailedState(FailureReason.SYSTEM_ERROR));
+                process.setState(new FailedState(ReasonOfFailure.SYSTEM_ERROR));
                 break;
             case 3:
-                // Damaged component
                 System.out.println("Component damaged during manufacturing of " + product.getName());
-                process.setState(new FailedState(FailureReason.DAMAGED_COMPONENT));
+                process.setState(new FailedState(ReasonOfFailure.DAMAGED_COMPONENT));
                 break;
         }
-    }
-
-    @Override
-    public String getStateName() {
-        return "InManufacturing";
     }
 }
