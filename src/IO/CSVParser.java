@@ -7,9 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 // CSV parser utility (Pure Fabrication GRASP pattern)
 public class CSVParser {
@@ -25,39 +23,25 @@ public class CSVParser {
                 continue;
             }
 
-            String[] parts = line.split("\t"); // Use tab as delimiter
+            String[] parts = line.split(";");
             if (parts.length >= 5) {
                 String name = parts[0].trim();
-                // Use component name as ID (replace spaces with underscores)
-                String id = name.replaceAll("\\s+", "_").toLowerCase();
-
-                // Parse unit cost - replace comma with period for decimal
-                double price = Double.parseDouble(parts[1].trim().replace(',', '.'));
-
-                // Parse unit weight - replace comma with period for decimal
-                double weight = Double.parseDouble(parts[2].trim().replace(',', '.'));
-
+                // Use the component name as the ID
+                String id = name;
+                // Replace comma with period in decimal values
+                String costStr = parts[1].trim().replace(',', '.');
+                String weightStr = parts[2].trim().replace(',', '.');
                 String type = parts[3].trim();
+                String stockStr = parts[4].trim().split(" ")[0]; // Get just the number part
 
-                // Parse stock quantity - extract number only
-                String stockStr = parts[4].trim();
-                int stock = 0;
-                // Extract numeric part of stock quantity
-                StringBuilder numericPart = new StringBuilder();
-                for (char c : stockStr.toCharArray()) {
-                    if (Character.isDigit(c)) {
-                        numericPart.append(c);
-                    }
-                }
-                if (numericPart.length() > 0) {
-                    stock = Integer.parseInt(numericPart.toString());
-                }
+                double price = Double.parseDouble(costStr);
+                double weight = Double.parseDouble(weightStr);
+                int stock = Integer.parseInt(stockStr);
 
                 Component component;
                 switch (type.toLowerCase()) {
                     case "raw material":
-                        component = new
-                                RawMaterial(id, name, price, weight, stock);
+                        component = new RawMaterial(id, name, price, weight, stock);
                         break;
                     case "paint":
                         component = new Paint(id, name, price, weight, stock);
@@ -82,62 +66,70 @@ public class CSVParser {
     public static List<ProductOrder> loadProducts(String filename, Inventory inventory) throws IOException {
         List<ProductOrder> orders = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line;
 
-        // Read header row to get component names
+        // Read the header line to get component names
         String headerLine = reader.readLine();
         if (headerLine == null) {
             reader.close();
             throw new IOException("Empty products file");
         }
 
-        String[] headers = headerLine.split("\t");
-
-        // Map column indices to component IDs
-        Map<Integer, String> columnToComponentId = new HashMap<>();
-        for (int i = 1; i < headers.length - 1; i++) { // Skip first column (Product Name) and last column (Quantity)
-            String componentName = headers[i].trim();
-            String componentId = componentName.replaceAll("\\s+", "_").toLowerCase();
-            columnToComponentId.put(i, componentId);
+        String[] headers = headerLine.split(";");
+        if (headers.length < 2) {
+            reader.close();
+            throw new IOException("Invalid products file format");
         }
 
-        // Read product rows
-        String line;
+        // Skip the "Product Name" and get component names
+        List<String> componentNames = new ArrayList<>();
+        for (int i = 1; i < headers.length - 1; i++) {
+            componentNames.add(headers[i].trim());
+        }
+
+        // Process product rows
         while ((line = reader.readLine()) != null) {
-            String[] parts = line.split("\t");
-            if (parts.length >= headers.length) {
-                String productName = parts[0].trim();
-                String productId = "prod_" + productName.replaceAll("\\s+", "_").toLowerCase();
+            String[] parts = line.split(";");
+            if (parts.length < componentNames.size() + 2) {
+                continue; // Skip invalid rows
+            }
 
-                Product product = new Product(productId, productName);
+            String productName = parts[0].trim();
+            String id = productName; // Use product name as ID
 
-                // Parse component quantities
-                for (int i = 1; i < parts.length - 1; i++) {
-                    String quantityStr = parts[i].trim();
+            Product product = new Product(id, productName);
+
+            // Add components based on quantities
+            for (int i = 1; i < parts.length - 1; i++) {
+                if (i - 1 < componentNames.size()) {
+                    String componentName = componentNames.get(i - 1);
+                    String quantityStr = parts[i].trim().replace(',', '.');
+
                     if (!quantityStr.isEmpty() && !quantityStr.equals("0")) {
-                        // Replace comma with period for decimal
-                        double quantity = Double.parseDouble(quantityStr.replace(',', '.'));
-                        if (quantity > 0) {
-                            String componentId = columnToComponentId.get(i);
-                            Component component = inventory.getComponent(componentId);
+                        try {
+                            // Parse as double then convert to int as needed
+                            double quantityDouble = Double.parseDouble(quantityStr);
+
+                            Component component = inventory.getComponent(componentName);
                             if (component != null) {
-                                // Convert to int (assuming we need integer quantities)
-                                int intQuantity = (int)Math.ceil(quantity);
-                                product.addComponent(component, intQuantity);
-                                System.out.println("Added " + intQuantity + "x " +
+                                product.addComponent(component, quantityDouble);
+                                System.out.println("Added " + quantityDouble + "x " +
                                         component.getName() + " to " + product.getName());
                             } else {
-                                System.out.println("Component not found: " + componentId);
+                                System.out.println("Component not found: " + componentName);
                             }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid quantity for " + componentName + ": " + quantityStr);
                         }
                     }
                 }
-
-                // Get order quantity from last column
-                int orderQuantity = Integer.parseInt(parts[parts.length - 1].trim());
-                orders.add(new ProductOrder(product, orderQuantity));
-                System.out.println("Loaded product order: " + product.getName() +
-                        " (Quantity: " + orderQuantity + ")");
             }
+
+            // Get the quantity to manufacture from the last column
+            int orderQuantity = Integer.parseInt(parts[parts.length - 1].trim());
+            orders.add(new ProductOrder(product, orderQuantity));
+            System.out.println("Loaded product order: " + product.getName() +
+                    " (Quantity: " + orderQuantity + ")");
         }
 
         reader.close();

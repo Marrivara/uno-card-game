@@ -7,11 +7,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Product implements Component {
     private String id;
     private String name;
     private int stock;
-    private Map<Component, Integer> components; // Component and quantity needed (rounded up from decimal)
+    private Map<Component, Double> components; // Component and quantity needed (can be decimal)
 
     public Product(String id, String name) {
         this.id = id;
@@ -20,7 +24,7 @@ public class Product implements Component {
         this.components = new HashMap<>();
     }
 
-    public void addComponent(Component component, int quantity) {
+    public void addComponent(Component component, double quantity) {
         components.put(component, quantity);
     }
 
@@ -37,7 +41,7 @@ public class Product implements Component {
     @Override
     public double getPrice() {
         double total = 0;
-        for (Map.Entry<Component, Integer> entry : components.entrySet()) {
+        for (Map.Entry<Component, Double> entry : components.entrySet()) {
             total += entry.getKey().getPrice() * entry.getValue();
         }
         return total;
@@ -46,7 +50,7 @@ public class Product implements Component {
     @Override
     public double getWeight() {
         double total = 0;
-        for (Map.Entry<Component, Integer> entry : components.entrySet()) {
+        for (Map.Entry<Component, Double> entry : components.entrySet()) {
             total += entry.getKey().getWeight() * entry.getValue();
         }
         return total;
@@ -71,13 +75,15 @@ public class Product implements Component {
         stock += quantity;
     }
 
-    public Map<Component, Integer> getComponents() {
+    public Map<Component, Double> getComponents() {
         return Collections.unmodifiableMap(components);
     }
 
     public boolean areComponentsAvailable() {
-        for (Map.Entry<Component, Integer> entry : components.entrySet()) {
-            if (!entry.getKey().isAvailable(entry.getValue())) {
+        for (Map.Entry<Component, Double> entry : components.entrySet()) {
+            // Convert decimal quantities to integer by ceiling (to ensure enough stock)
+            int requiredQuantity = (int) Math.ceil(entry.getValue());
+            if (!entry.getKey().isAvailable(requiredQuantity)) {
                 return false;
             }
         }
@@ -85,8 +91,10 @@ public class Product implements Component {
     }
 
     public void consumeComponents() {
-        for (Map.Entry<Component, Integer> entry : components.entrySet()) {
-            entry.getKey().decreaseStock(entry.getValue());
+        for (Map.Entry<Component, Double> entry : components.entrySet()) {
+            // Convert decimal quantities to integer by ceiling (to ensure enough stock)
+            int requiredQuantity = (int) Math.ceil(entry.getValue());
+            entry.getKey().decreaseStock(requiredQuantity);
         }
     }
 

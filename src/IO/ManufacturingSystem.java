@@ -5,7 +5,6 @@ import src.BusinessLayer.Report;
 import src.BusinessLayer.model.Inventory;
 import src.BusinessLayer.model.Product;
 import src.BusinessLayer.states.InManufacturingState;
-import src.IO.CSVParser;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,29 +25,6 @@ public class ManufacturingSystem {
             // Display initial inventory
             System.out.println("\nInitial Inventory:");
             inventory.printInventory();
-
-            // Check if all components are loaded correctly
-            System.out.println("\nVerifying component inventory...");
-            boolean allComponentsLoaded = true;
-            String[] componentNames = {
-                    "wood_plank", "screw", "white_paint", "wood_glue", "chair_frame_(metal)",
-                    "leather_upholstery", "black_paint", "table_top_(wood)", "nails",
-                    "coffee_table_frame", "wood_varnish", "shelf_frame_(wood)", "nightstand_frame",
-                    "bed_frame_(wood)", "wardrobe_frame_(wood)", "dining_table_frame", "tv_stand_frame"
-            };
-
-            for (String componentId : componentNames) {
-                if (inventory.getComponent(componentId) == null) {
-                    System.out.println("Warning: Component not found: " + componentId);
-                    allComponentsLoaded = false;
-                }
-            }
-
-            if (!allComponentsLoaded) {
-                System.out.println("Some components are missing. Check your CSV files and component IDs.");
-            } else {
-                System.out.println("All components verified successfully.");
-            }
 
             // Create report
             Report report = new Report();
