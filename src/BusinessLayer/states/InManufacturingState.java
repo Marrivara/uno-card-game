@@ -3,25 +3,26 @@ package src.BusinessLayer.states;
 import src.BusinessLayer.ManufacturingProcess;
 import src.BusinessLayer.model.Product;
 import src.BusinessLayer.states.Interfaces.ManufacturingState;
+import src.BusinessLayer.states.enums.FailureReason;
 
 import java.util.Random;
 
 // InManufacturing state
 public class InManufacturingState implements ManufacturingState {
     private Random random = new Random();
-    
+
     @Override
     public void process(ManufacturingProcess process) {
         Product product = process.getProduct();
         System.out.println("Manufacturing: " + product.getName());
-        
+
         // Check if components are available again (just to be safe)
         if (!product.areComponentsAvailable()) {
             System.out.println("Stock shortage detected during manufacturing for " + product.getName());
-            process.setState(new FailedState("Stock Shortage"));
+            process.setState(new FailedState(FailureReason.STOCK_SHORTAGE));
             return;
         }
-        
+
         // Random manufacturing outcome (1-3)
         int outcome = random.nextInt(3) + 1;
         switch (outcome) {
@@ -34,16 +35,16 @@ public class InManufacturingState implements ManufacturingState {
             case 2:
                 // System error
                 System.out.println("System error during manufacturing of " + product.getName());
-                process.setState(new FailedState("System Error"));
+                process.setState(new FailedState(FailureReason.SYSTEM_ERROR));
                 break;
             case 3:
                 // Damaged component
                 System.out.println("Component damaged during manufacturing of " + product.getName());
-                process.setState(new FailedState("Damaged Component"));
+                process.setState(new FailedState(FailureReason.DAMAGED_COMPONENT));
                 break;
         }
     }
-    
+
     @Override
     public String getStateName() {
         return "InManufacturing";

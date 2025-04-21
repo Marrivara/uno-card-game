@@ -6,8 +6,7 @@ public interface Component {
     String getName();
     double getPrice();
     double getWeight();
-    boolean anyInStockByAmount(int quantity);
-    void removeStockByAmount(int quantity);
-    void addStockByAmount(int quantity);
+    boolean isAvailable(int quantity);
+    void decreaseStock(int quantity);
+    void increaseStock(int quantity);
 }
-
