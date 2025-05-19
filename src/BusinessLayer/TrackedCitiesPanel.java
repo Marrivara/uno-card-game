@@ -1,4 +1,4 @@
-package com.weather.view;
+package src.BusinessLayer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,13 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.weather.controller.WeatherController;
-import com.weather.model.City;
-import com.weather.model.TemperatureUnit;
-import com.weather.model.WeatherData;
-import com.weather.model.WeatherModel;
-import com.weather.model.WeatherObservable;
-import com.weather.model.WeatherObserver;
 
 public class TrackedCitiesPanel extends JPanel implements WeatherObserver {
     private WeatherModel model;

@@ -1,4 +1,4 @@
-package com.weather.view;
+package src.BusinessLayer;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -7,12 +7,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
-import com.weather.controller.WeatherController;
-import com.weather.model.TemperatureUnit;
-import com.weather.model.WeatherModel;
-import com.weather.model.WeatherObservable;
-import com.weather.model.WeatherObserver;
 
 public class TemperatureUnitSelector extends JPanel implements WeatherObserver {
     private WeatherModel model;

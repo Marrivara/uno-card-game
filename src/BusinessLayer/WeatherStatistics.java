@@ -1,4 +1,4 @@
-package com.weather.model;
+package src.BusinessLayer;
 
 import java.time.LocalDate;
 import java.util.Comparator;

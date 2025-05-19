@@ -1,4 +1,4 @@
-package com.weather.view;
+package src.BusinessLayer;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -13,11 +13,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.weather.controller.WeatherController;
-import com.weather.model.City;
-import com.weather.model.WeatherModel;
-import com.weather.model.WeatherObservable;
-import com.weather.model.WeatherObserver;
 
 public class CityListPanel extends JPanel implements WeatherObserver {
     private WeatherModel model;

@@ -1,14 +1,9 @@
-package com.weather;
+package src.BusinessLayer;
 
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import com.weather.controller.WeatherController;
-import com.weather.model.UserPreferences;
-import com.weather.model.WeatherDataRepository;
-import com.weather.model.WeatherModel;
-import com.weather.view.MainFrame;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +11,7 @@ public class Main {
             // Load weather data
             WeatherDataRepository repository = new WeatherDataRepository();
             repository.loadDataFromCSV("weather_data.csv");
-            
+
             // Load user preferences
             UserPreferences preferences;
             try {
@@ -25,13 +20,13 @@ public class Main {
                 // If preferences file doesn't exist, create default preferences
                 preferences = new UserPreferences();
             }
-            
+
             // Create model
             final WeatherModel model = new WeatherModel(repository, preferences);
-            
+
             // Create controller
             final WeatherController controller = new WeatherController(model);
-            
+
             // Create and show the main frame
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -41,20 +36,21 @@ public class Main {
                     frame.setVisible(true);
                 }
             });
-            
+
             // Save preferences when application exits
+            UserPreferences finalPreferences = preferences;
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
                     try {
-                        preferences.saveToFile("preferences.properties");
+                        finalPreferences.saveToFile("preferences.properties");
                     } catch (IOException e) {
                         System.err.println("Error saving preferences: " + e.getMessage());
                     }
                 }
             });
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error loading weather data: " + e.getMessage(), 
+            JOptionPane.showMessageDialog(null, "Error loading weather data: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }

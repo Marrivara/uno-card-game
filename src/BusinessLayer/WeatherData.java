@@ -1,4 +1,4 @@
-package com.weather.model;
+package src.BusinessLayer;
 
 import java.time.LocalDate;
 
@@ -30,7 +30,7 @@ public class WeatherData {
         if (unit == TemperatureUnit.CELSIUS) {
             return temperature;
         } else {
-            return celsiusToFahrenheit(temperature);
+            return celsiusToFahrenheitConverter(temperature);
         }
     }
     

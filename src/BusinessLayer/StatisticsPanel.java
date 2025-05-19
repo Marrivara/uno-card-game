@@ -1,16 +1,10 @@
-package com.weather.view;
+package src.BusinessLayer;
 
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.weather.model.City;
-import com.weather.model.TemperatureUnit;
-import com.weather.model.WeatherModel;
-import com.weather.model.WeatherObservable;
-import com.weather.model.WeatherObserver;
-import com.weather.model.WeatherStatistics;
 
 public class StatisticsPanel extends JPanel implements WeatherObserver {
     private WeatherModel model;

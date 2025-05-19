@@ -1,16 +1,10 @@
-package com.weather.view;
-
+package src.BusinessLayer;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-
-import com.weather.controller.WeatherController;
-import com.weather.model.WeatherModel;
-import com.weather.model.WeatherObservable;
-import com.weather.model.WeatherObserver;
 
 public class MainFrame extends JFrame implements WeatherObserver {
     private WeatherModel model;

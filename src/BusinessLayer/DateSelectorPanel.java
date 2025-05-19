@@ -1,17 +1,13 @@
-package com.weather.view;
+package src.BusinessLayer;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import com.weather.controller.WeatherController;
-import com.weather.model.WeatherModel;
 
 public class DateSelectorPanel extends JPanel {
     private WeatherModel model;

@@ -1,4 +1,4 @@
-package com.weather.model;
+package src.BusinessLayer;
 
 public enum TemperatureUnit {
     CELSIUS, FAHRENHEIT

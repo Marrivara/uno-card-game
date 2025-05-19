@@ -1,4 +1,4 @@
-package com.weather.model;
+package src.BusinessLayer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

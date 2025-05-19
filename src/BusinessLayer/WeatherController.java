@@ -1,8 +1,6 @@
-package com.weather.controller;
+package src.BusinessLayer;
 
 import java.time.LocalDate;
-import com.weather.model.TemperatureUnit;
-import com.weather.model.WeatherModel;
 
 public class WeatherController {
     private WeatherModel model;

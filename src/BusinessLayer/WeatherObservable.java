@@ -1,4 +1,4 @@
-package com.weather.model;
+package src.BusinessLayer;
 
 public interface WeatherObservable {
     void addObserver(WeatherObserver observer);
